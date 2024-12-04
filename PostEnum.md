@@ -31,7 +31,7 @@
 Given 3 directories with numerous of txt files in them, which stands for the email transcripts. Write a script to find any lines with the word 'password' in them.  
 ```
 First Attempt
-```
+```powershell
 # Define the path to the parent folder containing subfolders (Mary, John, Mike)
 $parentFolder = "C:\path\to\your\folder"
 
@@ -66,7 +66,7 @@ Found 'password' in: C:\Users\Administrator\Desktop\emails\Mary\Doc3M.txt
 
 
 What if we wants to show the line in terminate
-```
+```powershell
 # Define the path to the parent folder containing subfolders (Mary, John, Mike)
 $parentFolder = "C:\path\to\your\folder"
 
