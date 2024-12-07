@@ -108,3 +108,46 @@ foreach ($folder in $subfolders) {
 - Linux Smart Enumeration: https://github.com/diego-treitos/linux-smart-enumeration
 - Linux Priv Checker: https://github.com/linted/linuxprivchecker
 
+
+## $PATH malicous use (with SUID and SGID Privilege Escalation)
+
+### Short version
+this vector depends on many things (as the lower privilege user):
+1. check the permission to edit $PATH itself (if can then we can ask $PATH to point to a new directory to execute our malicious script)
+2. if $PATH not editable, we can check the dir that is in existing $PATH, see if any of them is writable to current user? If so, we can place a our malicious script(bin) inside
+3. if we do not have writable perm to any of the directories, next is to check if we have writable perm to any of the app in those directories. If so, we can change those app to be malicious.
+   
+(with above said, if the goal is to escalate privilege)
+We need to find a script that satisfy 2 conditions:
+1. root owned
+2. SUID or SGID bit is set 
+3. Is changeable/editable to us that is within any of the dir in $PATH
+
+
+### FULL Detailed verion
+1. Check if $PATH is editable
+- Editable $PATH:The $PATH variable itself can be modified by a user, but this usually requires write permissions to modify the environment variable itself. For a lower privilege user, this could be done if they can modify files that set environment variables (like .bashrc or .profile).
+  - If the user can edit $PATH, they can potentially add a malicious directory to the path, which might contain a malicious script or binary.
+  - This would allow the user to execute a malicious file instead of the intended command (e.g., by hijacking the command they want to run, like ls, cat, etc.).
+
+
+2. Check if directories in $PATH are writable
+- Writable Directories: If $PATH already contains directories that are writable to the user (e.g., /tmp, /home/user, etc.), the user can place their malicious script inside these directories.
+  - Example: A user could place a script named ls in a writable directory that's earlier in the $PATH list. When the malicious script is executed, it would run instead of the legitimate ls binary.
+3. Check if writable applications in $PATH are available
+- Writable Applications: If the user cannot modify the $PATH itself and cannot write to directories in $PATH, another approach would be to look for binaries (or applications) inside directories in $PATH that are writable.
+  - Example: If a specific application like /usr/bin/ls is writable, the user could overwrite it with their malicious version. If that executable is called later, it would run the malicious code instead of the legitimate command.
+
+**For Privilege Escalation (SUID/SGID)**
+
+If the goal is to escalate privileges, then the user must look for a root-owned binary with the SUID (Set User ID) or SGID (Set Group ID) bit set.
+
+Steps to find such a vulnerability:
+1. Find SUID/SGID binaries: These are binaries that, when executed, run with the privileges of the file owner (root for SUID, group for SGID).
+
+  - The user can find these files using:
+  
+`find / -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null`
+  - This will search for files with the SUID (4000) or SGID (2000) permission bits.
+2. Check for files with SUID/SGID set and owned by root: If a file with SUID/SGID is owned by root, it can be used to escalate privileges when executed by a regular user. The user can attempt to modify or exploit those files.
+3. Check if the file is editable: If the user has write permissions to the file (or can gain write access by exploiting other vulnerabilities), they could potentially modify the binary or script to execute their malicious code, and when it's run, they would have escalated privileges (since it's running as root).
