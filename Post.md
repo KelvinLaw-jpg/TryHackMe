@@ -9,6 +9,10 @@
 
 
 **Questions to be asked** (exercises and examples for each machine i am in)
+- what machine is it?
+- what system is it running?
+- what prividge do we have?
+- what device(s) are connected to the machine?
 - How many users are there on the machine?
 - Which local user does this SID(S-1-5-21-1394777289-3961777894-1791813945-501) belong to?
 - How many users have their password required values set to False?
@@ -24,6 +28,51 @@
 - What is the path of the scheduled task called new-sched-task?
 - Who is the owner of the C:\
 
+## Windows
+Below are commands that would address our questions
+
+**Basic Enum**
+- systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+- hostname
+- echo %username%
+- net users (see more details)
+- net users `username`
+
+**Network interface and routing Enum**
+- ipconfig /all
+- route print
+- arp -A
+
+**Active Network and Firewall Rules**
+- netstat -ano 
+- netsh firewall show state
+- netsh firewall show config
+
+**scheduled tasks, running processes, started services and installed drivers**
+- schtasks /query /fo LIST /v
+- tasklist /SVC
+- net start
+- DRIVERQUERY
+
+**Powershell**
+look for powershell scripts to extract the following information: processes, services, user accounts, user groups, network interfaces, Hard Drive information, Network Share information, installed Windows patches, programs that run at startup, list of installed software, information about the operating system and timezone.
+
+**Things to look for if the company install windows in a mass fashion**
+- c:\sysprep.inf
+- c:\sysprep\sysprep.xml
+- %WINDIR%\Panther\Unattend\Unattended.xml
+- %WINDIR%\Panther\Unattended.xml
+- Groups.xml file which is stored in SYSVOL
+- Services\Services.xml: Element-Specific Attributes
+- ScheduledTasks\ScheduledTasks.xml: Task Inner Element, TaskV2 Inner Element, ImmediateTaskV2 Inner Element
+- Printers\Printers.xml: SharedPrinter Element
+- Drives\Drives.xml: Element-Specific Attributes
+- DataSources\DataSources.xml: Element-Specific Attributes
+
+**Learn how to use Microsoft sysinternal**
+
+**Window Services**
+- sc qc Spooler
 
 ## Powershell script exercise
 
