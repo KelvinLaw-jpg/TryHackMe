@@ -72,8 +72,10 @@ look for powershell scripts to extract the following information: processes, ser
 **Learn how to use Microsoft sysinternal**
 
 **Window Services**
+- sc query (state= running)
 - sc qc Spooler
-
+- Accesschk.exe to check access level of almost anything
+- 
 ## Powershell script exercise
 
 ```
