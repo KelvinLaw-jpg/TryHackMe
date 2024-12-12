@@ -28,3 +28,31 @@ cons: passwords can be changed, only can be executed by admin account in initial
 using evil-winrm to download SAM and System and get hash with impacket 
 
 ### RID Hijacking
+
+
+
+## SchTask == Linux crontab & cronjobs
+### Creating the backdoor
+3 things to look at: 
+
+first is ofcos the payload (can be ps, cmd, exe, py), and Date-the frequency that the task run (tip: less would be less sus), 
+less is who runs the task (we would like the highest priv account to run it
+
+### Post creation of the backdoor
+
+Hiding the Task
+SD = security descriptor: an identifier, or an access control list to this task. By changing it, other users will not be able to see it. So if we just delete the SD, 
+meaning no one on this machine can see this task, including the system. So we will delete it to the registry
+
+
+Pratice:
+1. create `schtasks /create /sc <unit:min,hour> /mo <value:1,2,3> /TN <taskname> /RN <who runs the task>
+2. use `schtasks /query /tn testbackdoor` to see if the task is running correctly
+3. 
+
+
+
+
+
+
+
