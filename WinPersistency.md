@@ -48,8 +48,19 @@ meaning no one on this machine can see this task, including the system. So we wi
 Pratice:
 1. create `schtasks /create /sc <unit:min,hour> /mo <value:1,2,3> /TN <taskname> /RN <who runs the task>
 2. use `schtasks /query /tn testbackdoor` to see if the task is running correctly
-3. 
+3. after successfully schedule the task, open window registry with psexec and delete the SD in the scheduled test (HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree)
 
+
+### Startup (C:\users\appdata\startup) folder
+- to check startup tasklist, use msconfig
+
+### Registry
+
+**3 Folders of our interest**
+- Run/run once (Under HKLM (older machines) or HKCU (modern machines))
+- Winlogon (user init or shell, stuff inside cannot be deleted. By default, user init points to userinit.exe and shell points to
+ explorer.exe, so what we can do is to add our payload behind like "userinit.exe, payload.exe")
+- startup Script (place at startup folder or registry, registry is always preferable cause even sys admin are not always familia)
 
 
 
