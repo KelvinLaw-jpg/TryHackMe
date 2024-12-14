@@ -1,7 +1,9 @@
 ### Things to enumerate after taking a machine
 
-  - users (whoami, getuid)
-  - basic networking information (network mapping)
+  - users, priv and system (whoami, getuid)
+  - networking information (network mapping)
+  - Services and defender
+  - Firewall situation
   - file permissions (what can we execute and where can we execute)
   - registry permissions
   - scheduled and running tasks (crontab, chonjob)
